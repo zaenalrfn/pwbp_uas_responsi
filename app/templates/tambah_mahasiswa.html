@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tambah Mahasiswa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Include Navbar -->
+    {% include 'components/navbar.html' %}
+
+    <div class="container mx-auto p-4">
+      <h1 class="text-4xl font-bold text-center text-blue-500 mb-6">Tambah Mahasiswa</h1>
+
+      <!-- Form Tambah Mahasiswa -->
+      <form id="tambah-mahasiswa-form" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+        <div class="mb-4">
+          <label for="npm" class="block text-lg font-semibold">NPM</label>
+          <input type="text" name="npm" id="npm" class="w-full p-2 border border-gray-300 rounded-lg" required />
+        </div>
+
+        <div class="mb-4">
+          <label for="nama" class="block text-lg font-semibold">Nama</label>
+          <input type="text" name="nama" id="nama" class="w-full p-2 border border-gray-300 rounded-lg" required />
+        </div>
+
+        <div class="mb-4">
+          <label for="tgl_lahir" class="block text-lg font-semibold">Tanggal Lahir</label>
+          <input type="date" name="tgl_lahir" id="tgl_lahir" class="w-full p-2 border border-gray-300 rounded-lg" required />
+        </div>
+
+        <div class="mb-4">
+          <label for="alamat" class="block text-lg font-semibold">Alamat</label>
+          <input type="text" name="alamat" id="alamat" class="w-full p-2 border border-gray-300 rounded-lg" required />
+        </div>
+
+        <div class="flex justify-center">
+          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Tambah Mahasiswa</button>
+        </div>
+      </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script>
+      // Menangani submit form menggunakan JavaScript (AJAX)
+      document.getElementById("tambah-mahasiswa-form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Mencegah form dikirim secara biasa
+
+        fetch("/mahasiswa", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            npm: document.getElementById("npm").value,
+            nama: document.getElementById("nama").value,
+            tgl_lahir: document.getElementById("tgl_lahir").value,
+            alamat: document.getElementById("alamat").value,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            alert(data.message);
+
+            if (data.message === "Successfully created mahasiswa!") {
+              window.location.href = "/";
+            }
+          })
+          .catch((error) => console.log("Error:", error));
+      });
+    </script>
+  </body>
+</html>
